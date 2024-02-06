@@ -1,19 +1,27 @@
+import { useState } from "react";
+import { FaTimes } from "react-icons/fa";
+import { create } from "ipfs-http-client";
+import axios from "axios";
+
 import {
   useGlobalState,
   setGlobalState,
   setLoadingMsg,
   setAlert,
 } from "../store";
-import { useState } from "react";
-import { FaTimes } from "react-icons/fa";
-import { create } from "ipfs-http-client";
 import { mintNFT } from "../Blockchain.services";
 
-const auth =
+/*const auth =
   "Basic " +
   Buffer.from(
     "2Gg95YqQ672apEtGQbewfwGQANc" + ":" + "b2c85789868e83772bfbc59ddd6d09bb"
-  ).toString("base64");
+  ).toString("base64");*/
+
+const pinataJWT =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzZjAzZDllMi04ZGQ2LTQyMjEtYTc1ZS02ZjI0NjkzYTI3ZTQiLCJlbWFpbCI6ImRvdWdsYXNfaGVucmlxdWVkdWFydGVAaG90bWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX0seyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiZmEyZDYxZDRkYjlhNzJmMTY2ODUiLCJzY29wZWRLZXlTZWNyZXQiOiJmZjAxYWY3NjliNmRhZGJiZjhmYTQ3OGY1MjA0NmNlYjBmYzk1MzM4MjI1MTg0MWVhZGIzNGZiMGYzMWVjN2JjIiwiaWF0IjoxNzA2MTI0NTAwfQ.V_8v4FUVhSF4NdrWk_fr7H7ApIqm1kYCtaSHbjeLK4k";
+const pinataBaseURL = "https://api.pinata.cloud/";
+const pinataEndpoint = "pinning/pinFileToIPFS";
+const auth = `Bearer ${pinataJWT}`;
 
 const client = create({
   host: "ipfs.infura.io",
@@ -41,8 +49,24 @@ const CreateNFT = () => {
     setGlobalState("loading", { show: true, msg: "Uploading IPFS data..." });
 
     try {
-      const created = await client.add(fileUrl);
-      const metadataURI = `https://ipfs.io/ipfs/${created.path}`;
+      const formData = new FormData();
+      formData.append("file", fileUrl);
+      const res = await axios.post(
+        `${pinataBaseURL}${pinataEndpoint}`,
+        formData,
+        {
+          maxBodyLength: "Infinity",
+          headers: {
+            "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+            Authorization: auth,
+          },
+        }
+      );
+      const metadataURI = `https://black-tropical-parakeet-136.mypinata.cloud/ipfs/${res.data.IpfsHash}`;
+      //console.log(url);
+
+      /*const created = await client.add(fileUrl);
+      const metadataURI = `https://ipfs.io/ipfs/${created.path}`;*/
       const nft = { title, price, description, metadataURI };
 
       setLoadingMsg("Intializing transaction...");
