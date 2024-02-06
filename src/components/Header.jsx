@@ -1,10 +1,11 @@
-import { connectWallet } from '../Blockchain.services'
-import timelessLogo from '../assets/timeless.png'
+import { FaEthereum } from "react-icons/fa";
+import { connectWallet } from "../Blockchain.services";
+import timelessLogo from "../assets/timeless.png";
 
-import { useGlobalState, truncate } from '../store'
+import { useGlobalState, truncate } from "../store";
 
 const Header = () => {
-  const [connectedAccount] = useGlobalState('connectedAccount')
+  const [connectedAccount] = useGlobalState("connectedAccount");
   return (
     <nav className="w-4/5 flex md:justify-center justify-between items-center py-4 mx-auto">
       <div className="md:flex-[0.5] flex-initial justify-center items-center">
@@ -24,6 +25,9 @@ const Header = () => {
         <li className="mx-4 cursor-pointer">Artist</li>
         <li className="mx-4 cursor-pointer">Features</li>
         <li className="mx-4 cursor-pointer">Community</li>
+        <li className="mx-4 flex flex-row">
+          <FaEthereum color="grey" size={30} /> Goerli
+        </li>
       </ul>
 
       {connectedAccount ? (
@@ -45,7 +49,7 @@ const Header = () => {
         </button>
       )}
     </nav>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
