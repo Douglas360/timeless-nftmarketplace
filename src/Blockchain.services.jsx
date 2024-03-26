@@ -39,12 +39,12 @@ const isWallectConnected = async () => {
     });
 
     window.ethereum.on("accountsChanged", async () => {
-      setGlobalState("connectedAccount", accounts[0].toLowerCase());
+      setGlobalState("connectedAccount", accounts[0]?.toLowerCase());
       await isWallectConnected();
     });
 
     if (accounts.length) {
-      setGlobalState("connectedAccount", accounts[0].toLowerCase());
+      setGlobalState("connectedAccount", accounts[0]?.toLowerCase());
     } else {
       setGlobalState("connectedAccount", "");
       reportError("Please connect wallet.");
