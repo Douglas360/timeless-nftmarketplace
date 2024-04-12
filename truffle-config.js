@@ -8,17 +8,17 @@ module.exports = {
       port: 8545,
       network_id: "*", // Match any network id
     },
-    goerli: {
+    sepolia: {
       provider: function () {
         return new HDWalletProvider({
           mnemonic: {
             phrase:
               "ugly swift salute dismiss fix crop moral shrug bench hat misery grunt",
           },
-          providerOrUrl: `https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+          providerOrUrl: `https://eth-sepolia.g.alchemy.com/v2/eW-tnP4AAByG93fex0dqqcE2i2u008GP`,
         });
       },
-      network_id: "5", // Goerli's network id
+      network_id: 11155111,
       gas: 5500000,
       gasPrice: 10000000000, // 10 Gwei
     },

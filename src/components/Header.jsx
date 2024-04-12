@@ -26,7 +26,7 @@ const Header = () => {
         <li className="mx-4 cursor-pointer">Features</li>
         <li className="mx-4 cursor-pointer">Community</li>
         <li className="mx-4 flex flex-row">
-          <FaEthereum color="grey" size={30} /> Goerli
+          <FaEthereum color="grey" size={30} /> Sepolia - Testnet
         </li>
       </ul>
 
